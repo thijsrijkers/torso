@@ -1,6 +1,6 @@
-# Torstol
+# Rigour
 
-**Torstol** is an open source, self-hosted infrastructure orchestration engine written in Go. Define your infrastructure, databases, applications, DNS, load balancers, and more in a declarative `.Torstol` file, and let Torstol handle the rest.
+**Rigour** is an open source, self-hosted infrastructure orchestration engine written in Go. Define your infrastructure, databases, applications, DNS, load balancers, and more in a declarative `.Rigour` file, and let Rigour handle the rest.
 
 Think of it as CloudFormation, but one you own, run yourself, and extend however you want.
 
@@ -8,24 +8,24 @@ Think of it as CloudFormation, but one you own, run yourself, and extend however
 
 ## How it works
 
-Torstol runs as a long lived HTTP server on your infrastructure. You bootstrap it once using the CLI with an initial environment file. After that, everything is driven by HTTP request an `.Torstol` file to the server, and Torstol will reconcile your desired state with reality.
+Rigour runs as a long lived HTTP server on your infrastructure. You bootstrap it once using the CLI with an initial environment file. After that, everything is driven by HTTP request an `.Rigour` file to the server, and Rigour will reconcile your desired state with reality.
 
 ```
-Torstol init --file environment.Torstol   # Bootstrap your environment
-Torstol serve                          # Start the Torstol HTTP server
+Rigour init --file environment.Rigour   # Bootstrap your environment
+Rigour serve                          # Start the Rigour HTTP server
 
 curl -X POST http://localhost:7070/apply \
-  -H "Content-Type: application/x-Torstol" \
-  --data-binary @my-service.Torstol    # Deploy a new service
+  -H "Content-Type: application/x-Rigour" \
+  --data-binary @my-service.Rigour    # Deploy a new service
 ```
 
 No proprietary dashboards. No cloud lock in. Just Go, HTTP, and a file.
 
 ---
 
-## The Torstol File
+## The Rigour File
 
-An `.Torstol` file is a declarative YAML based configuration that describes the desired state of a resource or environment. It follows a simple `kind` + `spec` structure:
+An `.Rigour` file is a declarative YAML based configuration that describes the desired state of a resource or environment. It follows a simple `kind` + `spec` structure:
 
 ```yaml
 kind: Database
@@ -51,28 +51,28 @@ spec:
       value: postgres://...
 ```
 
-Torstol reads the `kind` field and routes it to the correct provisioner under the hood.
+Rigour reads the `kind` field and routes it to the correct provisioner under the hood.
 
 ---
 
 ## Design Principles
 
-- **Self hosted first** — Torstol runs on your hardware, your cloud, your rules.
-- **File driven** — everything is defined in an `.Torstol` file. No hidden state in a UI.
+- **Self hosted first** — Rigour runs on your hardware, your cloud, your rules.
+- **File driven** — everything is defined in an `.Rigour` file. No hidden state in a UI.
 - **HTTP native** — the engine is an API. Automate it, wrap it, integrate it.
-- **Pluggable** — providers are first-class. Torstol doesn't dictate where you run.
-- **Go all the way** — single binary, fast startup, easy to deploy Torstol itself.
+- **Pluggable** — providers are first-class. Rigour doesn't dictate where you run.
+- **Go all the way** — single binary, fast startup, easy to deploy Rigour itself.
 
 ---
 
 ## Roadmap
 
 ### Phase 1 — Core Engine
-- [ ] Define the `.Torstol` file specification (YAML-based, `kind` + `spec` pattern)
-- [ ] Build the CLI (`Torstol init`, `Torstol serve`, `Torstol apply`, `Torstol status`, `Torstol destroy`)
-- [ ] Bootstrap environment from an initial `.Torstol` file via `Torstol init`
-- [ ] Start the Torstol HTTP server via `Torstol serve`
-- [ ] Accept `.Torstol` file payloads over HTTP `POST /apply`
+- [ ] Define the `.Rigour` file specification (YAML-based, `kind` + `spec` pattern)
+- [ ] Build the CLI (`Rigour init`, `Rigour serve`, `Rigour apply`, `Rigour status`, `Rigour destroy`)
+- [ ] Bootstrap environment from an initial `.Rigour` file via `Rigour init`
+- [ ] Start the Rigour HTTP server via `Rigour serve`
+- [ ] Accept `.Rigour` file payloads over HTTP `POST /apply`
 - [ ] Parse, validate, and route resource kinds to their provisioners
 - [ ] Basic state tracking, know what has been created, updated, or removed
 
@@ -118,7 +118,7 @@ Torstol reads the `kind` field and routes it to the correct provisioner under th
 
 ### Phase 6 — Secrets & Configuration
 - [ ] Secrets store, store and inject secrets into apps at deploy time
-- [ ] Support referencing secrets inside `.Torstol` files via `${{ secret.name }}` syntax
+- [ ] Support referencing secrets inside `.Rigour` files via `${{ secret.name }}` syntax
 - [ ] Encryption at rest for stored secrets
 - [ ] Secret rotation support
 
@@ -151,15 +151,15 @@ Torstol reads the `kind` field and routes it to the correct provisioner under th
 ### Phase 10 — Provider System
 - [ ] Pluggable provider architecture, write your own provisioner in Go
 - [ ] Official providers: Docker, Kubernetes, DigitalOcean, Hetzner, AWS
-- [ ] Provider registry, install providers via `Torstol provider add <name>`
-- [ ] Provider versioning and pinning inside `.Torstol` files
+- [ ] Provider registry, install providers via `Rigour provider add <name>`
+- [ ] Provider versioning and pinning inside `.Rigour` files
 
 ---
 
 
 ## Contributing
 
-Torstol is in early development. Contributions, ideas, and feedback are very welcome. Open an issue or a pull request.
+Rigour is in early development. Contributions, ideas, and feedback are very welcome. Open an issue or a pull request.
 
 ---
 
