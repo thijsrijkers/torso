@@ -1,0 +1,32 @@
+use crate::flag::AVAILABLE_FLAGS;
+
+pub fn show_menu() {
+    println!();
+    println!("  ████████╗ ██████╗ ██████╗ ███████╗ ██████╗ ");
+    println!("     ██╔══╝██╔═══██╗██╔══██╗██╔════╝██╔═══██╗");
+    println!("     ██║   ██║   ██║██████╔╝███████╗██║   ██║");
+    println!("     ██║   ██║   ██║██╔══██╗╚════██║██║   ██║");
+    println!("     ██║   ╚██████╔╝██║  ██║███████║╚██████╔╝");
+    println!("     ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝ ╚═════╝ ");
+    println!();
+    println!();
+    println!("  ┌──────────────────────────────────────────┐");
+    println!("  │  No flag provided. Available options:    │");
+    println!("  └──────────────────────────────────────────┘");
+    println!();
+ 
+    for flag in AVAILABLE_FLAGS {
+        println!("  {:<18}  {}", flag.name, flag.description);
+    }
+ 
+    println!();
+    println!("  Usage:  torso [FLAG]");
+    println!("  Tip:    Run `torso --help` for detailed usage.");
+    println!();
+}
+
+pub fn handle_unknown(flag: &str) {
+    eprintln!("  error: unknown flag `{flag}`");
+    eprintln!("  Run `torso --help` to see available flags.");
+    std::process::exit(1);
+}
