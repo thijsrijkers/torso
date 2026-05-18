@@ -71,7 +71,7 @@ Torso reads the `kind` field and routes it to the correct provisioner under the 
 - [ ] Define the `.Torso` file specification (YAML-based, `kind` + `spec` pattern)
 - [ ] Build the CLI (`Torso init`, `Torso serve`, `Torso apply`, `Torso status`, `Torso destroy`)
 - [ ] Bootstrap environment from an initial `.Torso` file via `Torso init`
-- [ ] Start the Torso HTTP server via `Torso serve`
+- [ ] Start the Torso HTTP server via `Torso init`
 - [ ] Accept `.Torso` file payloads over HTTP `POST /apply`
 - [ ] Parse, validate, and route resource kinds to their provisioners
 - [ ] Basic state tracking, know what has been created, updated, or removed
