@@ -2,18 +2,25 @@ use std::{env, fs};
 use std::path::PathBuf;
 use yaml_rust::YamlLoader;
 use yaml_rust::Yaml;
+use crate::provisioner::payload_server::setup_server;
 
 pub fn load_scaffold() {
     let torso_file = read_yaml_from_root();
     check_required_values(&torso_file);
+
+    if torso_file["kind"].as_str().unwrap_or("") == "provisioner" {
+        setup_server(); 
+    }
 }
 
 fn check_required_values(cfg: &Yaml) {
-    let app_name = cfg["app_name"]
+    cfg["app_name"]
         .as_str()
         .expect("Missing or invalid 'app_name' in torso.yaml");
 
-    println!("app_name={app_name}");
+    cfg["kind"]
+        .as_str()
+        .expect("Missing or invalid 'kind' in torso.yaml");
 }
 
 fn read_yaml_from_root() -> Yaml {
