@@ -199,7 +199,7 @@ Daemon mode and systemd integration are out of scope for the initial version. Th
 ## 11. Open Questions
 
 | # | Question |
-|---|---|---|
+|---|---|
 | 1 | Does the engine run as one-shot or daemon in production? |
 | 2 | Is per-machine config generated from templates or maintained manually per machine? |
 | 3 | Should the binary be versioned and stored centrally, or always pushed from a local build? |
