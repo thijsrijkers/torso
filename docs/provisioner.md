@@ -6,7 +6,7 @@
 
 ## 1. Overview
 
-This document describes the design of the **Provisioner** — a subsystem of the Torso infrastructure engine responsible for deploying the engine binary and its configuration to a target machine, then executing it in the correct context.
+This document describes the design of the **Provisioner**, a subsystem of the Torso infrastructure engine responsible for deploying the engine binary and its configuration to a target machine, then executing it in the correct context.
 
 The Provisioner pushes the Torso binary and a `torso.yaml` configuration file to a remote machine and runs the binary from the directory where the configuration lives. The engine resolves its configuration by working directory convention — no flags, no paths, no ambiguity.
 
@@ -170,7 +170,7 @@ Each target machine receives its own `torso.yaml`. Configuration is owned and ma
 
 The Provisioner executes the engine binary with the deployment directory as its working directory. This has three consequences:
 
-- The engine resolves `torso.yaml` by working directory — no `--config` flag is needed
+- The engine resolves `torso.yaml` by working directory, no `--config` flag is needed
 - Relative paths declared inside `torso.yaml` are relative to the deployment directory
 - Output files, logs, and state written by the engine default to the deployment directory unless the configuration overrides them
 
@@ -198,12 +198,12 @@ Daemon mode and systemd integration are out of scope for the initial version. Th
 
 ## 11. Open Questions
 
-| # | Question | Owner |
+| # | Question |
 |---|---|---|
-| 1 | Does the engine run as one-shot or daemon in production? | Engine team |
-| 2 | Is per-machine config generated from templates or maintained manually per machine? | Operator |
-| 3 | Should the binary be versioned and stored centrally, or always pushed from a local build? | TBD |
-| 4 | What is the rollback strategy when a new configuration breaks the engine? | TBD |
+| 1 | Does the engine run as one-shot or daemon in production? |
+| 2 | Is per-machine config generated from templates or maintained manually per machine? |
+| 3 | Should the binary be versioned and stored centrally, or always pushed from a local build? |
+| 4 | What is the rollback strategy when a new configuration breaks the engine? |
 
 ---
 
@@ -212,5 +212,5 @@ Daemon mode and systemd integration are out of scope for the initial version. Th
 - Central binary registry for version-controlled engine distribution across the fleet
 - Pull-based provisioning where the target fetches its own configuration on a schedule or external trigger
 - Checksum and signature verification of the binary before execution
-- Provisioning inventory — tracking which machine is running which engine version and config
+- Provisioning inventory, tracking which machine is running which engine version and config
 - Systemd unit file deployment for daemon mode support
