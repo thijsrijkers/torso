@@ -1,21 +1,21 @@
 
 # Docker Deployment Module
  
-> **Scope:** This module receives a deployment config from the engine's API layer, pulls the described image from a registry, runs it as a container, writes logs to disk, and rolls back automatically if the new deployment fails. It owns nothing outside of that — no HTTP, no global state, no routing.
+> **Scope:** This module receives a deployment config from the engine's API layer, pulls the described image from a registry, runs it as a container, writes logs to disk, and rolls back automatically if the new deployment fails. It owns nothing outside of that, no HTTP, no global state, no routing.
  
 ---
  
 ## Responsibility
  
-The module takes a deployment config, talks to the local Docker daemon over the Unix socket, and returns either a running container result or an error. Logs are written to disk as a side effect. Everything else — HTTP, state, routing — is the API layer's responsibility.
+The module takes a deployment config, talks to the local Docker daemon over the Unix socket, and returns either a running container result or an error. Logs are written to disk as a side effect. Everything else, HTTP, state, routing, is the API layer's responsibility.
  
 ---
  
 ## Config
  
-The module expects a resolved config — secrets are substituted upstream, no `${{ }}` placeholders reach this module. The config describes the image to pull, the registry to pull from (if private), the host and port to bind, environment variables, volume mounts, and restart and pull policies.
+The module expects a resolved config, secrets are substituted upstream, no `${{ }}` placeholders reach this module. The config describes the image to pull, the registry to pull from (if private), the host and port to bind, environment variables, volume mounts, and restart and pull policies.
  
-`PullPolicy` controls whether the module skips the pull if the image tag is already present locally. `Always` is the safe default — `IfNotPresent` risks stale images for mutable tags like `latest`.
+`PullPolicy` controls whether the module skips the pull if the image tag is already present locally. `Always` is the safe default, `IfNotPresent` risks stale images for mutable tags like `latest`.
  
 ---
  
@@ -36,11 +36,11 @@ Steps 4 and 5 are the only steps that continue past a failure. Everything else a
  
 ## Rollback
  
-Rollback is intentionally minimal. The module only rolls back one step — from a failed new deploy back to the last known-good image.
+Rollback is intentionally minimal. The module only rolls back one step, from a failed new deploy back to the last known-good image.
  
 Before replacing a running container the module writes the current image tag to a small file on disk. If the new container fails to start, that file is read and the previous image is deployed in its place.
  
-If rollback succeeds the module returns a success result with `rolled_back: true` — something is running, but it is not what the caller asked for. If rollback also fails the module returns a hard error.
+If rollback succeeds the module returns a success result with `rolled_back: true`, something is running, but it is not what the caller asked for. If rollback also fails the module returns a hard error.
  
 Rollback does not recurse or retry. It is best-effort, one attempt.
  
@@ -55,7 +55,7 @@ On success the module returns:
 - Image that is actually running
 - Host and port it is bound to
 - `rolled_back` flag
-**The `rolled_back` flag** signals a specific third state: the new deploy failed at start, the engine recovered by restarting the previous image, and the machine is stable — but the caller's requested version is not running. This is meaningfully different from both a clean success and a hard failure. The API layer should surface this distinction to the caller rather than collapsing it into a generic error — the system is healthy, but the deploy did not take effect.
+**The `rolled_back` flag** signals a specific third state: the new deploy failed at start, the engine recovered by restarting the previous image, and the machine is stable, but the caller's requested version is not running. This is meaningfully different from both a clean success and a hard failure. The API layer should surface this distinction to the caller rather than collapsing it into a generic error, the system is healthy, but the deploy did not take effect.
  
 ---
  
@@ -90,7 +90,7 @@ Two functions:
  
 **`deploy(config, log_dir)`** — runs the full deployment flow. Returns the container result or an error. Log directory is passed in so the module does not decide where logs live.
  
-**`remove(name)`** — stops and removes a container by name. Idempotent — does not error if the container does not exist.
+**`remove(name)`** — stops and removes a container by name. Idempotent does not error if the container does not exist.
  
 ---
  
